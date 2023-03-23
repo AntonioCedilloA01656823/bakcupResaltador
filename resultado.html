@@ -1,0 +1,56 @@
+<html>
+<body>
+<p>#include <iostream></p>
+<p>#include <vector></p>
+<p>#include <cmath></p>
+<p></p>
+<p>using namespace std;</p>
+<p></p>
+<p>struct Complex {</p>
+<p>    double real;</p>
+<p>    double imag;</p>
+<p></p>
+<p>    Complex(double real, double imag) : real(real), imag(imag) {}</p>
+<p>    Complex() : real(0), imag(0) {}</p>
+<p></p>
+<p>    Complex operator+(const Complex& other) const {</p>
+<p>        return Complex(real + other.real, imag + other.imag);</p>
+<p>    }</p>
+<p></p>
+<p>    Complex operator*(const Complex& other) const {</p>
+<p>        return Complex(real * other.real - imag * other.imag, real * other.imag + imag * other.real);</p>
+<p>    }</p>
+<p>};</p>
+<p></p>
+<p>class Polynomial {</p>
+<p>private:</p>
+<p>    vector<Complex> coeffs;</p>
+<p></p>
+<p>public:</p>
+<p>    Polynomial(const vector<Complex>& coeffs) : coeffs(coeffs) {}</p>
+<p></p>
+<p>    Complex evaluate(Complex x) const {</p>
+<p>        Complex result(0, 0);</p>
+<p>        for (int i = 0; i < coeffs.size(); i++) {</p>
+<p>            result = result * x + coeffs[i];</p>
+<p>        }</p>
+<p>        return result;</p>
+<p>    }</p>
+<p>};</p>
+<p></p>
+<p>int main() {</p>
+<p>    // Crear un polinomio complejo</p>
+<p>    vector<Complex> coeffs = {Complex(1, 2), Complex(-3, 4), Complex(5, -6)};</p>
+<p>    Polynomial poly(coeffs);</p>
+<p></p>
+<p>    // Evaluar el polinomio en un número complejo</p>
+<p>    Complex x(1, -1);</p>
+<p>    Complex y = poly.evaluate(x);</p>
+<p></p>
+<p>    // Imprimir el resultado</p>
+<p>    cout << "El resultado de evaluar el polinomio en " << x.real << " + " << x.imag << "i es: " << y.real << " + " << y.imag << "i" << endl;</p>
+<p></p>
+<p>    return 0;</p>
+<p>}</p>
+</body>
+</html>
