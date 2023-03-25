@@ -43,8 +43,8 @@
   (define simbolos 0)
   (define palabras 0)
  
-  (if (string-contains? code "for") (set! ciclos (+ ciclos 1)) "no existen condicionales en el codigo" )
-  (if (or (string-contains? code "else") (string-contains? code "if")) (set! condicional (+ condicional 1)) "no existen ciclos en el codigo")
+  (if (or (string-contains? code "for") (string-contains? code "while")) (set! ciclos (+ ciclos 1)) "no existen condicionales en el codigo" )
+  (if (or (string-contains? code "else") (string-contains? code "if")  (string-contains? code "case")) (set! condicional (+ condicional 1)) "no existen ciclos en el codigo")
   (if (or (string-contains? code "and") (string-contains? code "or")) (set! operadores (+ operadores 1)) "no existen operadores booleanos en el codigo")
   (if (or (string-contains? code "+") (string-contains? code "-") (string-contains? code "*") (string-contains? code "/")) (set! operadores (+ operadores 1)) "No exitsten operadores aritmeticos en el codigo")
   (if (or (string-contains? code ">") (string-contains? code "<")) (set! operadores (+ operadores 1)) "No existen operadores aritmeticos/comparación en el codigo")
@@ -52,8 +52,11 @@
   (if (or (string-contains? code "=") (string-contains? code "(") (string-contains? code ")")) (set! simbolos (+ simbolos 1)) "No existen simbolos en el codigo")
   (if (or (string-contains? code "'") (string-contains? code "\"") (string-contains? code "[")) (set! simbolos (+ simbolos 1)) "No existen simbolos en el codigo")
   (if (or (string-contains? code "]") (string-contains? code "{") (string-contains? code "}")) (set! simbolos (+ simbolos 1)) "No existen simbolos en el codigo")
-  (if (or (string-contains? code "break") (string-contains? code "double") (string-contains? code "char")) (set! palabras (+ palabras 1)) "No existen palabras reservadas en el codigo")
-  (if (or (string-contains? code "string") (string-contains? code "list")) (set! palabras (+ palabras 1)) "No existen palabras reservadas en el codigo")
+  (if (or (string-contains? code ";") (string-contains? code ",") (string-contains? code "|" )) (set! simbolos (+ simbolos 1)) "No existen simbolos en el codigo")
+  (if (or (string-contains? code "break") (string-contains? code "double") (string-contains? code "char")) (set! palabras (+ palabras 1)) "No existen palabras en el codigo")
+  (if (or (string-contains? code "string") (string-contains? code "list")) (set! palabras (+ palabras 1)) "No existen palabras en el codigo")
+  (if (string-contains? code "let") (set! palabras (+ palabras 1)) "No existen palabras en el codigo")
+  (if (or (string-contains? code "lambda") (string-contains? code "def") (string-contains? code "define")) (set! palabras (+ palabras 1)) "No existen palabras en el codigo")
 
 
   
@@ -129,11 +132,11 @@
       (display "</head>\n<body>\n")
       (display "<h2> Resultados de Analisis </h2>\n")
       (display "<h4> Simbologia </h4>\n")
-      (display "<h4> Rojo: Operadores </h4>")
-      (display "<h4> Azul: Ciclos </h4>")
-      (display "<h4> Morado: Condicionales </h4>")
-      (display "<h4> Naranja: Simbolos </h4>")
-      (display "<h4> Verde: Palabras reservadas </h4>")
+      (display "<h4 class=\"operador\" > Rojo: Operadores </h4>")
+      (display "<h4 class=\"ciclo\"> Azul: Ciclos </h4>")
+      (display "<h4 class=\"condicional\"> Morado: Condicionales </h4>")
+      (display "<h4 class=\"simbolo\"> Naranja: Simbolos </h4>")
+      (display "<h4 class=\"palabra\"> Verde: Palabras reservadas </h4>")
       (display "<h2> *****************</h2>")
       
 
@@ -144,9 +147,13 @@
 
                                  ;Loops--
                                  (cond ((string=? palabra "for") (string-append "<span class=\"ciclo\">" palabra "</span>"))
+                                 ((string=? palabra "while") (string-append "<span class=\"ciclo\">" palabra "</span>"))
+
                                  ;Condicionales--
                                        ((string=? palabra "if") (string-append "<span class=\"condicional\">" palabra "</span>")) ;condicional
                                        ((string=? palabra "else") (string-append "<span class=\"condicional\">" palabra "</span>")) ;condicional
+                                       ((string=? palabra "case") (string-append "<span class=\"condicional\">" palabra "</span>")) ;condicional
+
                                  ;Operadores (Aritmetico y booleano)----
                                        ((string=? palabra "and") (string-append "<span class=\"operador\">" palabra "</span>")) ;operador
                                        ((string=? palabra "or") (string-append "<span class=\"operador\">" palabra "</span>")) ;operador
@@ -168,6 +175,12 @@
                                        ((string=? palabra "]") (string-append "<span class=\"simbolo\">" palabra "</span>")) ;simbolo
                                        ((string=? palabra "{") (string-append "<span class=\"simbolo\">" palabra "</span>")) ;simbolo
                                        ((string=? palabra "}") (string-append "<span class=\"simbolo\">" palabra "</span>")) ;simbolo
+                                       ((string=? palabra ";") (string-append "<span class=\"simbolo\">" palabra "</span>")) ;simbolo
+                                       ((string=? palabra ",") (string-append "<span class=\"simbolo\">" palabra "</span>")) ;simbolo
+                                       ((string=? palabra "|") (string-append "<span class=\"simbolo\">" palabra "</span>")) ;simbolo
+
+
+
 
 
                                  ;Palabras reservadas---
@@ -176,10 +189,10 @@
                                        ((string=? palabra "break") (string-append "<span class=\"palabra\">" palabra "</span>")) ;palabra
                                        ((string=? palabra "double") (string-append "<span class=\"palabra\">" palabra "</span>")) ;palabra
                                        ((string=? palabra "char") (string-append "<span class=\"palabra\">" palabra "</span>")) ;palabra
+                                       ((string=? palabra "lambda") (string-append "<span class=\"palabra\">" palabra "</span>")) ;palabra
 
 
-
-
+                                 ;Palabras que no deben ser remarcadas---
 
                                        (else palabra)))
                                (string-split linea " "))
