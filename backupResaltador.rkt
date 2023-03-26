@@ -7,7 +7,7 @@
 
 ;Checando que tipo de lenguaje es (toma el string del archivo y lo escanea por elementos clave dependiendo de cada lenguaje (no necesario pero checar)
 
-(define (identificar-codigo code)
+(define (identificar-codigo code) ;Complejidad O(1)
   (define python 0)
   (define racket 0)
   (define c-plus 0)
@@ -36,7 +36,7 @@
 
 ;Checando cuantas categorias lexicas para resaltar (basado en elementos en comun y lenguaje del documento)---
 
-(define (analisis code)
+(define (analisis code) ;Complejidad O(1)
   (define operadores 0)
   (define condicional 0)
   (define ciclos 0)
@@ -81,41 +81,41 @@
 
 
 ;Tomar el input del documento, guardarlo en variable ---
-(display "Ingresa el nombre del documento (incluye '.txt'): ")
-(define doc (read-line))
-(display "Leyendo el documento: ")
-(displayln doc)
+(display "Ingresa el nombre del documento (incluye '.txt'): ") ;O(1)
+(define doc (read-line)) ;O(1)
+(display "Leyendo el documento: ") ;O(1)
+(displayln doc) ;O(1)
 
 
 ;Metodos de Racket ------
 
 ;Transformando .txt a string para usar los metodos de busqueda
-(define codigo (file->string doc))
+(define codigo (file->string doc)) ;O(1)
 
 ;Leyendo el documento linea por linea ---
 
 ; Abre el archivo para leer
-(define input-port (open-input-file doc))
+(define input-port (open-input-file doc)) ;O(1)
 
 ; Lee y muestra cada línea del archivo
-(let loop ()
+(let loop () ;O(n) -> n cambia dependiendo del # de lineas del documento .txt
   (define line (read-line input-port))
   (unless (eof-object? line)
     (displayln line)
     (loop)))
 
 ; Cierra el archivo
-(close-input-port input-port)
+(close-input-port input-port) ;O(n)
 
 
 
 ;Usando los procedimientos para imprimir en consola de Racket
 
-(identificar-codigo codigo)
-(analisis codigo)
+(identificar-codigo codigo) ;O(1)
+(analisis codigo) ; O(1)
 
 ;Metodos de HTML -----
-(define (leer-lineas archivo)
+(define (leer-lineas archivo) ;O(n) -> Depende del tamaño del archivo
   (with-input-from-file archivo
     (lambda ()
       (let loop ((lineas '())
@@ -124,7 +124,7 @@
               (else (loop (cons line lineas) (read-line))))))))
 
 
-(define (escribir-html archivo lineas)
+(define (escribir-html archivo lineas) ;O(n*m) -> n es numero de lineas, m es numero de palabras por letra
   (with-output-to-file archivo
     (lambda ()
       (display "<html>\n<head>\n")
@@ -201,7 +201,7 @@
                 lineas)
       (display "</body>\n</html>\n"))))
 
-(with-output-to-file "estilo.css" ;cambiar el nombre en cada uso
+(with-output-to-file "estilo.css" ;cambiar el nombre en cada uso, O(1)
   (lambda ()
     (display ".ciclo { color: blue; }\n")
     (display ".condicional { color: purple; }\n")
@@ -215,4 +215,15 @@
 (define (txt-a-html archivo-txt archivo-html)
   (escribir-html archivo-html (leer-lineas archivo-txt)))
 
-(txt-a-html doc "test.html") ;Cambiar el nombre cada vez que se usa
+(txt-a-html doc "result.html") ;Cambiar el nombre cada vez que se usa
+
+
+
+;Calculos de tiempo usando la función time
+
+(time(identificar-codigo codigo))
+(time(analisis codigo))
+
+;Metodo HTML
+(time (leer-lineas doc))
+(time(txt-a-html doc "tiempo.html"))
