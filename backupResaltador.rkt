@@ -201,7 +201,7 @@
                 lineas)
       (display "</body>\n</html>\n"))))
 
-(with-output-to-file "estilo.css" ;cambiar el nombre en cada uso, O(1)
+(with-output-to-file "estilo.css" ;cambiar el nombre en cada uso o borrar el file generado, O(1)
   (lambda ()
     (display ".ciclo { color: blue; }\n")
     (display ".condicional { color: purple; }\n")
@@ -215,7 +215,7 @@
 (define (txt-a-html archivo-txt archivo-html)
   (escribir-html archivo-html (leer-lineas archivo-txt)))
 
-(txt-a-html doc "result.html") ;Cambiar el nombre cada vez que se usa
+(txt-a-html doc "result.html") ;Cambiar el nombre cada vez que se usa o borrar el file generado
 
 
 
