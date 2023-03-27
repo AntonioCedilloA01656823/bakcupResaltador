@@ -206,7 +206,7 @@
     (display ".ciclo { color: blue; }\n")
     (display ".condicional { color: purple; }\n")
     (display ".operador { color: red; }\n")
-    (display ".simbolo { color: orange; }\n")
+    (display ".simbolo { color: orange; }\n") ;Se le complica al programa detectar algunos simbolos
     (display ".palabra { color: green; }\n")))
 
 
